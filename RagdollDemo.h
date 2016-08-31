@@ -44,6 +44,11 @@ class RagdollDemo : public GlutDemoApplication
 	btConstraintSolver*	m_solver;
 
 	btDefaultCollisionConfiguration* m_collisionConfiguration;
+    
+    btRigidBody*         body[9]; // one main body, 4x2 leg segments
+    btCollisionShape* geom[9];
+    bool pause;
+
 
 public:
 	void initPhysics();
@@ -54,7 +59,11 @@ public:
 	{
 		exitPhysics();
 	}
-
+    
+    void CreateBox( int index,
+                   double x, double y, double z,
+                   double length, double width, double height);
+    
 	void spawnRagdoll(const btVector3& startOffset);
 
 	virtual void clientMoveAndDisplay();

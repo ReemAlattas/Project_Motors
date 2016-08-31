@@ -379,6 +379,8 @@ void RagdollDemo::initPhysics()
 	//spawnRagdoll(startOffset);
 	startOffset.setValue(-1,0.5,0);
 	//spawnRagdoll(startOffset);
+    
+    CreateBox(0, 0., 1., 0., 1., 1., 0.2); // Create the box
 
 	clientResetScene();		
 }
@@ -446,6 +448,19 @@ void RagdollDemo::keyboardCallback(unsigned char key, int x, int y)
 	}
 
 	
+}
+
+
+void	RagdollDemo::CreateBox( int index,
+                               double x, double y, double z,
+                               double length, double width, double height)
+{
+    geom[index] = new btBoxShape(btVector3(width, height, length));
+    btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(x,y,z)));
+    btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(1, motionState, geom[index], btVector3(0,0,0));
+    body[index] = new btRigidBody(rigidBodyCI);
+    m_dynamicsWorld->addRigidBody(body[index]);
+
 }
 
 
