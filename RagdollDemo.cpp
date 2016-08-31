@@ -376,9 +376,9 @@ void RagdollDemo::initPhysics()
 
 	// Spawn one ragdoll
 	btVector3 startOffset(1,0.5,0);
-	spawnRagdoll(startOffset);
+	//spawnRagdoll(startOffset);
 	startOffset.setValue(-1,0.5,0);
-	spawnRagdoll(startOffset);
+	//spawnRagdoll(startOffset);
 
 	clientResetScene();		
 }
