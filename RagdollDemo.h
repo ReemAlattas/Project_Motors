@@ -67,7 +67,7 @@ public:
     void CreateCylinder( int index,
                    double x, double y, double z,
                    double diameter, double sideLength,
-                   int ax, int ay, int az, double angle);
+                   int i_x, int i_y, int i_z, double angle);
     
     
 	void spawnRagdoll(const btVector3& startOffset);

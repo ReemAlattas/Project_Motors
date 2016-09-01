@@ -381,10 +381,16 @@ void RagdollDemo::initPhysics()
 	//spawnRagdoll(startOffset);
     
     CreateBox(0, 0., 1., 0., 1., 1., 0.2); // Create the box
-    CreateCylinder(1, 1., 1., 0., 0.2, 1., 0, 0, 0, 45);
-    CreateCylinder(2, -1., 1., 0., 0.2, 1., 0, 0, 0, 45);
-    CreateCylinder(3, 0., -1., 1., 0.2, 1., 0, 0, 0, 45);
-    CreateCylinder(4, 0., 1., -1., 0.2, 1., 0, 0, 0, 45);
+    
+    CreateCylinder(1, 1., 1., 0., 0.2, 1., 0, 0, 1, 45);
+    CreateCylinder(2, -1., 1., 0., 0.2, 1., 0, 0, 1, 45);
+    CreateCylinder(3, 0., -1., 1., 0.2, 1., 1, 0, 0, 45);
+    CreateCylinder(4, 0., 1., -1., 0.2, 1., 1, 0, 0, 45);
+
+    CreateCylinder(5, 2., 1., 0., 0.2, 1., 0, 0, 1, 45);
+    CreateCylinder(6, -2., 1., 0., 0.2, 1., 0, 0, 1, 45);
+    CreateCylinder(7, 0., -1., 2., 0.2, 1., 1, 0, 0, 45);
+    CreateCylinder(8, 0., 1., -2., 0.2, 1., 0, 0, 0, 45);
 
     
 	clientResetScene();		
@@ -472,13 +478,17 @@ void	RagdollDemo::CreateBox( int index,
 void 	RagdollDemo::CreateCylinder( int index,
                     double x, double y, double z,
                     double diameter, double sideLength,
-                    int ax, int ay, int az, double angle)
+                    int i_x, int i_y, int i_z, double angle)
 {
     double rad_angle = angle * 3.14159 / 180.;
+    
     geom[index] = new btCylinderShape(btVector3(diameter, sideLength, diameter));
     //btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(ax,ay,az), rad_angle), btVector3(x,y,z)));
     btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(x,y,z)));
-    btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(1, motionState, geom[index], btVector3(1,0,0));
+    
+    
+    btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(1, motionState, geom[index], btVector3(i_x,i_y,i_z));
+    
     body[index] = new btRigidBody(rigidBodyCI);
     m_dynamicsWorld->addRigidBody(body[index]);
     
