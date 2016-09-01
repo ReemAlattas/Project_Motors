@@ -387,11 +387,16 @@ void RagdollDemo::initPhysics()
     CreateCylinder(3, 0., -1., 1., 0.2, 1., 1, 0, 0, 45);
     CreateCylinder(4, 0., 1., -1., 0.2, 1., 1, 0, 0, 45);
 
-    CreateCylinder(5, 2., 1., 0., 0.2, 1., 0, 0, 1, 45);
-    CreateCylinder(6, -2., 1., 0., 0.2, 1., 0, 0, 1, 45);
-    CreateCylinder(7, 0., -1., 2., 0.2, 1., 1, 0, 0, 45);
-    CreateCylinder(8, 0., 1., -2., 0.2, 1., 0, 0, 0, 45);
-
+    CreateCylinder(5, 1.2, 1., 0., 0.2, 1., 0, 0, 1, 45);
+    CreateCylinder(6, -1.2, 1., 0., 0.2, 1., 0, 0, 1, 45);
+    CreateCylinder(7, 0., -1., 1.2, 0.2, 1., 1, 0, 0, 45);
+    CreateCylinder(8, 0., 1., -1.2, 0.2, 1., 1, 0, 0, 45);
+    
+    CreateHinge(0, 1,5, 1.2,2,0, 0,0,1);
+    CreateHinge(1, 2,6, -1.2,2,0, 0,0,1);
+    
+    CreateHinge(2, 3,7, 0,0,1.2, 1,0,0);
+    CreateHinge(3, 4,8, 0,2,-1.2, 1,0,0);
     
 	clientResetScene();		
 }
@@ -492,6 +497,26 @@ void 	RagdollDemo::CreateCylinder( int index,
     body[index] = new btRigidBody(rigidBodyCI);
     m_dynamicsWorld->addRigidBody(body[index]);
     
+}
+
+void 	RagdollDemo::CreateHinge(int index, int body1, int body2, double x, double y, double z, double ax, double ay, double az)
+{
+    btVector3 p(x, y, z);
+    btVector3 a(ax, ay, az);
+    
+    btVector3 p1 = PointWorldToLocal(body1, p);
+    btVector3 p2 = PointWorldToLocal(body2, p);
+    
+    btVector3 a1 = AxisWorldToLocal(body1, a);
+    btVector3 a2 = AxisWorldToLocal(body2, a);
+    
+    // create
+    joints[index] = new btHingeConstraint(*body[body1], *body[body2],
+                                          p1, p2,
+                                          a1, a2, false);
+    
+    // Add to simulation
+    m_dynamicsWorld->addConstraint( joints[index] , true );
 }
 
 

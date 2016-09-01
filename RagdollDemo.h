@@ -21,6 +21,9 @@ Written by: Marten Svanfeldt
 
 #include "GlutDemoApplication.h"
 #include "LinearMath/btAlignedObjectArray.h"
+
+#include "BulletDynamics/ConstraintSolver/btHingeConstraint.h"
+
 class btBroadphaseInterface;
 class btCollisionShape;
 class btOverlappingPairCache;
@@ -47,7 +50,10 @@ class RagdollDemo : public GlutDemoApplication
     
     btRigidBody*         body[9]; // one main body, 4x2 leg segments
     btCollisionShape* geom[9];
-    bool pause;
+    bool pause = false;
+    
+    btHingeConstraint* joints[8];
+    bool oneStep;
 
 
 public:
@@ -60,6 +66,18 @@ public:
 		exitPhysics();
 	}
     
+    btVector3 PointWorldToLocal(int index, btVector3 &p) {
+        btTransform local1 = body[index]->getCenterOfMassTransform().inverse();
+        return local1 * p;
+    }
+    
+    btVector3 AxisWorldToLocal(int index, btVector3 &a) {
+        btTransform local1 = body[index]->getCenterOfMassTransform().inverse();
+        btVector3 zero(0,0,0);
+        local1.setOrigin(zero);
+        return local1 * a;
+    }
+    
     void CreateBox( int index,
                    double x, double y, double z,
                    double length, double width, double height);
@@ -68,6 +86,8 @@ public:
                    double x, double y, double z,
                    double diameter, double sideLength,
                    int i_x, int i_y, int i_z, double angle);
+    
+    void CreateHinge(int index, int body1, int body2, double x, double y, double z, double ax, double ay, double az);
     
     
 	void spawnRagdoll(const btVector3& startOffset);
