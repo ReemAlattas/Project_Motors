@@ -64,6 +64,12 @@ public:
                    double x, double y, double z,
                    double length, double width, double height);
     
+    void CreateCylinder( int index,
+                   double x, double y, double z,
+                   double diameter, double sideLength,
+                   int ax, int ay, int az, double angle);
+    
+    
 	void spawnRagdoll(const btVector3& startOffset);
 
 	virtual void clientMoveAndDisplay();
